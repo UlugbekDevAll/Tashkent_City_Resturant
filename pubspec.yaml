@@ -1,0 +1,74 @@
+name: tashkentcityresturant
+description: "Tashkent City Restaurant App"
+
+publish_to: 'none'
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.1
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_screenutil:
+  yandex_mapkit:
+  url_launcher:
+  easy_localization:
+  fluttertoast:
+  cached_network_image: ^3.3.1
+  animated_toggle_switch:
+  sms_autofill:
+  pinput:
+  calendar_date_picker2:
+  device_info:
+  device_info_plus:
+  flutter_riverpod:
+  freezed_annotation:
+  dotted_line:
+  blur:
+  just_the_tooltip:
+
+  flutter_svg:
+
+
+
+  cupertino_icons:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons:
+  freezed:
+  build_runner:
+  auto_route_generator:
+
+
+  flutter_lints: ^4.0.0
+
+
+flutter:
+
+
+  uses-material-design: true
+
+
+  assets:
+    - assets/fonts/
+    - assets/my_icons/
+    - assets/images/
+    - assets/translations/
+
+
+  fonts:
+      - family: Adonis
+        fonts:
+          - asset: assets/fonts/Adonis_Bold.otf
+            weight: 500
+          - asset: assets/fonts/Adonis_Regular.otf
+            weight: 400
+
+
+
