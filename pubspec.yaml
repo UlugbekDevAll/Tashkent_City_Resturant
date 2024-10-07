@@ -26,6 +26,8 @@ dependencies:
   device_info:
   device_info_plus:
   flutter_riverpod:
+  story_view:
+  auto_size_text:
   freezed_annotation:
   dotted_line:
   blur:

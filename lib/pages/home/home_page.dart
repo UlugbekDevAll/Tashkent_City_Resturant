@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:tashkentcityresturant/pages/home/riverpod/fetch_rec_products.dar
 import 'package:tashkentcityresturant/pages/home/riverpod/product_category_provider.dart';
 import 'package:tashkentcityresturant/pages/home/riverpod/products_provider.dart';
 import 'package:tashkentcityresturant/pages/home/riverpod/rec_products_provider.dart';
+import 'package:tashkentcityresturant/pages/home/widgets/product_list.dart';
 import 'package:tashkentcityresturant/pages/home/widgets/story_view.dart';
 import 'package:tashkentcityresturant/utils/cache_values.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
@@ -20,6 +22,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int totalCount = 0;
+
+  void updateTotalCount(int count) {
+    setState(() {
+      totalCount = count;
+    });
+  }
+
+  int totalCountPop = 0;
+
+  void updateTotalCountPop(int count) {
+    setState(() {
+      totalCountPop = count;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -265,79 +283,10 @@ class _HomePageState extends State<HomePage> {
 
                   return products.when(
                       data: (products) {
-                        return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: products.length,
-                            physics: ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                width: 224.w,
-                                height: 302.h,
-                                margin: EdgeInsets.only(
-                                  left: index == 0 ? 16 : 0,
-                                  right: 8,
-                                ),
-                                decoration: const BoxDecoration(
-                                    color: Color.fromRGBO(255, 253, 251, 1),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8))),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8, right: 8, left: 8),
-                                      child: Container(
-                                        height: 184.h,
-                                        width: double.infinity,
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(4)),
-                                            color: Color.fromRGBO(
-                                                243, 239, 233, 1)),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 12.h,
-                                    ),
-                                    Text(
-                                      '485 ₽',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(161, 105, 30, 1),
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    SizedBox(
-                                      height: 6.h,
-                                    ),
-                                    Text(
-                                      'Мясо гарнир',
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(63, 61, 60, 1),
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    SizedBox(height: 12.h),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, right: 8),
-                                      child: Container(
-                                        height: 40.h,
-                                        decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(200)),
-                                            border: Border.all(
-                                                color: Color.fromRGBO(
-                                                    23, 23, 23, 0.1),
-                                                width: 1)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            });
+                        return ProductListView(
+                          products: products,
+                          onTotalCountChanged: updateTotalCountPop,
+                        );
                       },
                       error: (error, stack) =>
                           Center(child: Text('Xatolik yuz berdi: $error')),
@@ -387,79 +336,10 @@ class _HomePageState extends State<HomePage> {
 
                   return products.when(
                       data: (products) {
-                        return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: products.length,
-                            physics: ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                width: 224.w,
-                                height: 302.h,
-                                margin: EdgeInsets.only(
-                                  left: index == 0 ? 16 : 0,
-                                  right: 8,
-                                ),
-                                decoration: const BoxDecoration(
-                                    color: Color.fromRGBO(255, 253, 251, 1),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(8))),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8, right: 8, left: 8),
-                                      child: Container(
-                                        height: 184.h,
-                                        width: double.infinity,
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(4)),
-                                            color: Color.fromRGBO(
-                                                243, 239, 233, 1)),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 12.h,
-                                    ),
-                                    Text(
-                                      '485 ₽',
-                                      style: TextStyle(
-                                          color:
-                                          Color.fromRGBO(161, 105, 30, 1),
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    SizedBox(
-                                      height: 6.h,
-                                    ),
-                                    Text(
-                                      'Мясо гарнир',
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(63, 61, 60, 1),
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    SizedBox(height: 12.h),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, right: 8),
-                                      child: Container(
-                                        height: 40.h,
-                                        decoration: BoxDecoration(
-                                            color: Colors.transparent,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(200)),
-                                            border: Border.all(
-                                                color: Color.fromRGBO(
-                                                    23, 23, 23, 0.1),
-                                                width: 1)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            });
+                        return ProductListView(
+                          products: products,
+                          onTotalCountChanged: updateTotalCount,
+                        );
                       },
                       error: (error, stack) =>
                           Center(child: Text('Xatolik yuz berdi: $error')),
@@ -470,6 +350,32 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: 138.h)
           ],
+        ),
+      ),
+      floatingActionButton: Visibility(
+        visible: totalCount + totalCountPop > 0,
+        child: Container(
+          width: 91.w,
+          height: 56.h,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(57, 126, 91, 1),
+            borderRadius: BorderRadius.all(Radius.circular(40)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset('assets/my_icons/cart_ic.svg'),
+              SizedBox(width: 4.w,),
+              SvgPicture.asset('assets/my_icons/dot_ic.svg'),
+              SizedBox(width: 4.w,),
+              Text("${totalCountPop + totalCount}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500))
+            ],
+          ),
         ),
       ),
     );
