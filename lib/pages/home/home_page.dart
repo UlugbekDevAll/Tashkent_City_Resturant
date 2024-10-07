@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tashkentcityresturant/pages/home/riverpod/fetch_rec_products.dart';
 import 'package:tashkentcityresturant/pages/home/riverpod/product_category_provider.dart';
+import 'package:tashkentcityresturant/pages/home/riverpod/products_provider.dart';
+import 'package:tashkentcityresturant/pages/home/riverpod/rec_products_provider.dart';
 import 'package:tashkentcityresturant/pages/home/widgets/story_view.dart';
 import 'package:tashkentcityresturant/utils/cache_values.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
@@ -12,19 +15,13 @@ import '../map/map_page.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
-
-
-
-
     return Scaffold(
       backgroundColor: MyColors.splash_bg,
       appBar: AppBar(
@@ -117,15 +114,14 @@ class _HomePageState extends State<HomePage> {
                 physics: ClampingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) =>
-                          StoryViewAdvertising()));
+                          builder: (_) => StoryViewAdvertising()));
                     },
                     child: Container(
                       width: 112.w,
-                      margin:
-                          EdgeInsets.only(left: index == 0 ? 8.w : 0, right: 6.w),
+                      margin: EdgeInsets.only(
+                          left: index == 0 ? 8.w : 0, right: 6.w),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -148,10 +144,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: Stack(
                               children: [
-                                Image.asset(
-                                    'assets/images/stories_img_bg.png',
+                                Image.asset('assets/images/stories_img_bg.png',
                                     fit: BoxFit.cover),
-                                Container(color: Colors.yellow.withOpacity(0.1)),
+                                Container(
+                                    color: Colors.yellow.withOpacity(0.1)),
                                 Align(
                                   alignment: Alignment.bottomCenter,
                                   child: Padding(
@@ -219,114 +215,137 @@ class _HomePageState extends State<HomePage> {
               height: 40.h,
               child: Consumer(
                 builder: (context, ref, child) {
-                  final categoriesAsyncValue = ref.watch(productsCategoryProvider);
+                  final categoriesAsyncValue =
+                      ref.watch(productsCategoryProvider);
 
-                  return categoriesAsyncValue.when(data: (categories){
-                    return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: categories.length,
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          final category=categories[index];
-                          return Container(
-                            height: 40.h,
-                            width: 84.w,
-                            margin: EdgeInsets.only(
-                                left: index == 0 ? 16 : 0, right: 6.0),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color.fromRGBO(23, 23, 23, 0.1), width: 1),
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(200)),
-                            child: Center(
-                              child: Text(
-                                category.name ?? 'Noma\'lum',
-                                style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Color.fromRGBO(23, 23, 23, 1)),
-                              ),
-                            ),
-                          );
-                        }
-                        );
-                  }, error: (error, stack) =>
-                      Center(child: Text('Xatolik yuz berdi: $error')), loading: () => Center(child: CircularProgressIndicator()
-                  ));
+                  return categoriesAsyncValue.when(
+                      data: (categories) {
+                        return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: categories.length,
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              final category = categories[index];
+                              return Container(
+                                height: 40.h,
+                                width: 84.w,
+                                margin: EdgeInsets.only(
+                                    left: index == 0 ? 16 : 0, right: 6.0),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color.fromRGBO(23, 23, 23, 0.1),
+                                        width: 1),
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(200)),
+                                child: Center(
+                                  child: Text(
+                                    category.name ?? 'Noma\'lum',
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: Color.fromRGBO(23, 23, 23, 1)),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      error: (error, stack) =>
+                          Center(child: Text('Xatolik yuz berdi: $error')),
+                      loading: () =>
+                          Center(child: CircularProgressIndicator()));
                 },
               ),
             ),
             SizedBox(height: 16.h),
             SizedBox(
-              height: 302.h,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  physics: ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 224.w,
-                      height: 302.h,
-                      margin: EdgeInsets.only(
-                        left: index == 0 ? 16 : 0,
-                        right: 8,
-                      ),
-                      decoration: const BoxDecoration(
-                          color: Color.fromRGBO(255, 253, 251, 1),
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8, right: 8, left: 8),
-                            child: Container(
-                              height: 184.h,
-                              width: double.infinity,
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4)),
-                                  color: Color.fromRGBO(243, 239, 233, 1)),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 12.h,
-                          ),
-                           Text(
-                             '485 ₽',
-                            style: TextStyle(
-                              color: Color.fromRGBO(161, 105, 30, 1),
-                              fontSize: 14.sp,
+              height: 310.h,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final products = ref.watch(productsProvider);
 
-                              fontWeight: FontWeight.w700
-                            ),
-                          ),
-                           SizedBox(height: 6.h,),
-                           Text(
-                             'Мясо гарнир',
-                            style: TextStyle(
-                              color: Color.fromRGBO(63, 61, 60, 1),
-                              fontSize: 18.sp,
-
-                              fontWeight: FontWeight.w400
-                            ),
-                          ),
-
-                          Container(
-                            height: 40.h,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.all(Radius.circular(200))
-                            ),
-                          )
-
-
-                        ],
-                      ),
-                    );
-                  }),
+                  return products.when(
+                      data: (products) {
+                        return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: products.length,
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                width: 224.w,
+                                height: 302.h,
+                                margin: EdgeInsets.only(
+                                  left: index == 0 ? 16 : 0,
+                                  right: 8,
+                                ),
+                                decoration: const BoxDecoration(
+                                    color: Color.fromRGBO(255, 253, 251, 1),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, right: 8, left: 8),
+                                      child: Container(
+                                        height: 184.h,
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4)),
+                                            color: Color.fromRGBO(
+                                                243, 239, 233, 1)),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 12.h,
+                                    ),
+                                    Text(
+                                      '485 ₽',
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromRGBO(161, 105, 30, 1),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    SizedBox(
+                                      height: 6.h,
+                                    ),
+                                    Text(
+                                      'Мясо гарнир',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(63, 61, 60, 1),
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    SizedBox(height: 12.h),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      child: Container(
+                                        height: 40.h,
+                                        decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(200)),
+                                            border: Border.all(
+                                                color: Color.fromRGBO(
+                                                    23, 23, 23, 0.1),
+                                                width: 1)),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                      error: (error, stack) =>
+                          Center(child: Text('Xatolik yuz berdi: $error')),
+                      loading: () =>
+                          Center(child: CircularProgressIndicator()));
+                },
+              ),
             ),
-
             SizedBox(
               height: 48.h,
             ),
@@ -361,24 +380,93 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: 16.h),
             SizedBox(
-              height: 302.h,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  physics: ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 224.w,
-                      margin: EdgeInsets.only(
-                        left: index == 0 ? 16 : 0,
-                        right: 8,
-                      ),
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(255, 253, 251, 1),
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                    );
-                  }),
+              height: 310.h,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final products = ref.watch(recProductsProvider);
+
+                  return products.when(
+                      data: (products) {
+                        return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: products.length,
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                width: 224.w,
+                                height: 302.h,
+                                margin: EdgeInsets.only(
+                                  left: index == 0 ? 16 : 0,
+                                  right: 8,
+                                ),
+                                decoration: const BoxDecoration(
+                                    color: Color.fromRGBO(255, 253, 251, 1),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8))),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, right: 8, left: 8),
+                                      child: Container(
+                                        height: 184.h,
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(4)),
+                                            color: Color.fromRGBO(
+                                                243, 239, 233, 1)),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 12.h,
+                                    ),
+                                    Text(
+                                      '485 ₽',
+                                      style: TextStyle(
+                                          color:
+                                          Color.fromRGBO(161, 105, 30, 1),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    SizedBox(
+                                      height: 6.h,
+                                    ),
+                                    Text(
+                                      'Мясо гарнир',
+                                      style: TextStyle(
+                                          color: Color.fromRGBO(63, 61, 60, 1),
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    SizedBox(height: 12.h),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      child: Container(
+                                        height: 40.h,
+                                        decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(200)),
+                                            border: Border.all(
+                                                color: Color.fromRGBO(
+                                                    23, 23, 23, 0.1),
+                                                width: 1)),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                      error: (error, stack) =>
+                          Center(child: Text('Xatolik yuz berdi: $error')),
+                      loading: () =>
+                          Center(child: CircularProgressIndicator()));
+                },
+              ),
             ),
             SizedBox(height: 138.h)
           ],

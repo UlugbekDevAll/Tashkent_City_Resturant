@@ -10,7 +10,7 @@
 /// deletedAt : null
 
 class ProductsCategoryModel {
-  // Klass o'zgaruvchilari
+
   String? _id;
   String? _createdAt;
   String? _updatedAt;
