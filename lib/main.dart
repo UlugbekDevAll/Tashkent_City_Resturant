@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tashkentcityresturant/pages/splash/splash_page.dart';
 
@@ -12,7 +13,8 @@ void main() {
     statusBarBrightness: Brightness.dark,
     systemNavigationBarIconBrightness: Brightness.dark,
   ));
-  runApp(const MyApp());
+
+  runApp(ProviderScope(child:MyApp()) );
 }
 
 class MyApp extends StatelessWidget {
