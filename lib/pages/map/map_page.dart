@@ -1,9 +1,8 @@
-
-
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tashkentcityresturant/pages/map/widgets/bottom_bar_sheet_map.dart';
 import 'package:tashkentcityresturant/pages/menu/widgets/switch_button.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -12,14 +11,14 @@ import '../../utils/cache_values.dart';
 
 class MapPage extends StatefulWidget {
   final Point point;
-  const MapPage(this.point,{super.key});
+
+  const MapPage(this.point, {super.key});
 
   @override
   State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
-
   bool loading = true;
   late YandexMapController mapController;
   List<MapObject> mapObjects = [];
@@ -33,8 +32,7 @@ class _MapPageState extends State<MapPage> {
 
   void moveCamera() {
     Future.delayed(const Duration(milliseconds: 250), () {
-      setState(() {
-      });
+      setState(() {});
       Future.delayed(const Duration(milliseconds: 700), () {
         mapController.moveCamera(
             CameraUpdate.newCameraPosition(
@@ -43,14 +41,13 @@ class _MapPageState extends State<MapPage> {
                 zoom: 14,
               ),
             ),
-            animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2)
-        );
+            animation:
+                const MapAnimation(type: MapAnimationType.smooth, duration: 2));
       });
     });
   }
 
-
-  bool switchButtonMapPage=false;
+  bool switchButtonMapPage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +56,7 @@ class _MapPageState extends State<MapPage> {
         Navigator.pop(context);
         return false;
       },
-      child:Scaffold(
+      child: Scaffold(
         body: Stack(
           children: [
             YandexMap(
@@ -74,35 +71,44 @@ class _MapPageState extends State<MapPage> {
                 mapController = yandexMapController;
               },
               onMapTap: (point) {
-                CacheKeys.openLink("yandexmaps://maps.yandex.com/?pt=${widget.point.longitude},${widget.point.latitude}&z=12");
+                CacheKeys.openLink(
+                    "yandexmaps://maps.yandex.com/?pt=${widget.point.longitude},${widget.point.latitude}&z=12");
               },
             ),
 
             Column(
               children: [
-                SizedBox(height:70.h),
+                SizedBox(height: 70.h),
                 Row(
                   children: [
                     SizedBox(width: 16.h),
                     AnimatedToggleSwitch<bool>.size(
                       current: switchButtonMapPage,
-                      values: [false,true],
+                      values: [false, true],
                       iconOpacity: 0.5,
-                      indicatorSize: Size(145.w,48.h),
-                      customIconBuilder: (context,local,global) => Center(
+                      indicatorSize: Size(145.w, 48.h),
+                      customIconBuilder: (context, local, global) => Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-
-                            SvgPicture.asset(local.value ? 'assets/my_icons/chayxana_mini_ic.svg':'assets/my_icons/home_profile_ic.svg',color: Color.lerp(Colors.black, Colors.white, local.animationValue),),
+                            SvgPicture.asset(
+                              local.value
+                                  ? 'assets/my_icons/chayxana_mini_ic.svg'
+                                  : 'assets/my_icons/home_profile_ic.svg',
+                              color: Color.lerp(Colors.black, Colors.white,
+                                  local.animationValue),
+                            ),
                             Text(
-                              local.value ? 'В чайхане': 'Доставка',style: TextStyle(color: Color.lerp(Colors.black, Colors.white, local.animationValue)),
-                            )
+                              local.value ? 'В чайхане' : 'Доставка',
+                              style: TextStyle(
+                                  color: Color.lerp(Colors.black, Colors.white,
+                                      local.animationValue)),
+                            ),
                           ],
                         ),
                       ),
-                      borderWidth:5.0 ,
+                      borderWidth: 5.0,
                       iconAnimationType: AnimationType.onHover,
                       style: ToggleStyle(
                         indicatorColor: Color.fromRGBO(216, 152, 65, 1),
@@ -110,18 +116,25 @@ class _MapPageState extends State<MapPage> {
                         borderRadius: BorderRadius.circular(80),
                       ),
                       selectedIconScale: 1.0,
-                      onChanged: (value) => setState(() => switchButtonMapPage=value),
+                      onChanged: (value) =>
+                          setState(() => switchButtonMapPage = value),
                     )
                   ],
-                )
+                ),
               ],
-            )
+            ),
 
+            // Position the BottomBarSheetMap at the bottom of the screen
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+
+              child: BottomBarSheetMap(),
+            ),
           ],
-        )
+        ),
       ),
     );
-
-
   }
 }

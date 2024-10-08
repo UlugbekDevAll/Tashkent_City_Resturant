@@ -206,9 +206,7 @@ class _HomePageState extends State<HomePage> {
                 Spacer(),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) =>
-                            MapPage(CacheKeys.currentUserPosition)));
+
                   },
                   child: Container(
                     height: 32.h,
@@ -354,27 +352,34 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: Visibility(
         visible: totalCount + totalCountPop > 0,
-        child: Container(
-          width: 91.w,
-          height: 56.h,
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(57, 126, 91, 1),
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset('assets/my_icons/cart_ic.svg'),
-              SizedBox(width: 4.w,),
-              SvgPicture.asset('assets/my_icons/dot_ic.svg'),
-              SizedBox(width: 4.w,),
-              Text("${totalCountPop + totalCount}",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500))
-            ],
+        child: GestureDetector(
+          onTap: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) =>
+                    MapPage(CacheKeys.currentUserPosition)));
+          },
+          child: Container(
+            width: 91.w,
+            height: 56.h,
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(57, 126, 91, 1),
+              borderRadius: BorderRadius.all(Radius.circular(40)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset('assets/my_icons/cart_ic.svg'),
+                SizedBox(width: 4.w,),
+                SvgPicture.asset('assets/my_icons/dot_ic.svg'),
+                SizedBox(width: 4.w,),
+                Text("${totalCountPop + totalCount}",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500))
+              ],
+            ),
           ),
         ),
       ),

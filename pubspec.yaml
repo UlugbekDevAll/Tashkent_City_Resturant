@@ -28,6 +28,7 @@ dependencies:
   flutter_riverpod:
   story_view:
   auto_size_text:
+  modal_bottom_sheet:
   freezed_annotation:
   dotted_line:
   blur:
