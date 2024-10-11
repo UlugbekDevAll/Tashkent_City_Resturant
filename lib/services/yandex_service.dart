@@ -10,13 +10,13 @@ class YandexService {
       opacity: 1,
       consumeTapEvents: true,
       onTap: (PlacemarkMapObject placeMark, Point point) {},
-      icon: PlacemarkIcon.single(
-        PlacemarkIconStyle(
-          anchor: const Offset(0.55, 0.7),
-          image: BitmapDescriptor.fromAssetImage('assets/images/marker_pin.png'),
-          scale: 0.95,
-        ),
-      ),
+      // icon: PlacemarkIcon.single(
+      //   PlacemarkIconStyle(
+      //     anchor: const Offset(0.55, 0.7),
+      //     image: BitmapDescriptor.fromAssetImage('assets/images/marker_pin.png'),
+      //     scale: 0.95,
+      //   ),
+      // ),
     );
   }
 }
