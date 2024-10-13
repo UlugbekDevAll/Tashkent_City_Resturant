@@ -30,6 +30,7 @@ dependencies:
   auto_size_text:
   modal_bottom_sheet:
   freezed_annotation:
+  shared_preferences:
   dotted_line:
   blur:
   just_the_tooltip:
@@ -50,6 +51,11 @@ dev_dependencies:
 
 
   flutter_lints: ^4.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_logo.png"
 
 
 flutter:

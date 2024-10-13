@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tashkentcityresturant/pages/home/home_page.dart';
+import 'package:tashkentcityresturant/pages/login/search_page.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
 
 class SplashPage extends StatefulWidget {
@@ -25,7 +26,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void navigate() async{
-    Widget page= const HomePage();
+    Widget page= const SearchPage();
 
     Future.delayed(const Duration(seconds: 1), (){
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> page));

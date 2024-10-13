@@ -9,6 +9,7 @@ import 'package:tashkentcityresturant/pages/home/riverpod/products_provider.dart
 import 'package:tashkentcityresturant/pages/home/riverpod/rec_products_provider.dart';
 import 'package:tashkentcityresturant/pages/home/widgets/product_list.dart';
 import 'package:tashkentcityresturant/pages/home/widgets/story_view.dart';
+import 'package:tashkentcityresturant/pages/menu/menu_page.dart';
 import 'package:tashkentcityresturant/utils/cache_values.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
 
@@ -206,7 +207,9 @@ class _HomePageState extends State<HomePage> {
                 Spacer(),
                 GestureDetector(
                   onTap: () {
-
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) =>
+                            ManuPage()));
                   },
                   child: Container(
                     height: 32.h,
