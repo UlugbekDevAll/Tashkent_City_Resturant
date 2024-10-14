@@ -30,6 +30,7 @@ dependencies:
   auto_size_text:
   modal_bottom_sheet:
   freezed_annotation:
+  mask_text_input_formatter:
   shared_preferences:
   dotted_line:
   blur:

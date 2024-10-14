@@ -345,7 +345,8 @@ class _HomePageState extends State<HomePage> {
                       error: (error, stack) =>
                           Center(child: Text('Xatolik yuz berdi: $error')),
                       loading: () =>
-                          Center(child: CircularProgressIndicator()));
+                          Center(child: CircularProgressIndicator())
+                  );
                 },
               ),
             ),
