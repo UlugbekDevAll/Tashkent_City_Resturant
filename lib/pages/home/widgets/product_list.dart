@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -81,18 +79,21 @@ class _ProductListViewState extends State<ProductListView> {
                   child: Center(
                     child: Image.network(
                       'https://api.justdev24.ru/file//${product.photo}',
-                      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
                         if (loadingProgress == null) return child;
                         return Center(
                           child: CircularProgressIndicator(
                             value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes ?? 1)
                                 : null,
                           ),
                         );
                       },
-                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                        return Text('Rasm yuklanishda xato: $error');
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        return Text('Rasm yuklanishda xato:');
                       },
                     ),
                   ),
@@ -101,14 +102,20 @@ class _ProductListViewState extends State<ProductListView> {
               SizedBox(height: 12.h),
               Text(
                 product.price.toString(),
-                style: TextStyle(color: Color.fromRGBO(161, 105, 30, 1), fontSize: 14.sp, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: Color.fromRGBO(161, 105, 30, 1),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700),
               ),
               SizedBox(height: 6.h),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: Text(
                   product.name ?? "Error",
-                  style: TextStyle(color: Color.fromRGBO(63, 61, 60, 1), fontSize: 18.sp, fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      color: Color.fromRGBO(63, 61, 60, 1),
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w400),
                   maxLines: 1,
                   textAlign: TextAlign.center,
                 ),
@@ -116,42 +123,48 @@ class _ProductListViewState extends State<ProductListView> {
               SizedBox(height: 12.h),
               Padding(
                 padding: const EdgeInsets.only(left: 8, right: 8),
-                child: Container(
-                  height: 40.h,
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.all(Radius.circular(200)),
-                      border: Border.all(color: Color.fromRGBO(23, 23, 23, 0.1), width: 1)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (_counters[index] > 0) ...[
-                        SizedBox(width: 16.w),
-                        GestureDetector(
-                          onTap: () => _decrement(index),
-                          child: SvgPicture.asset('assets/my_icons/minus_ic.svg'),
-                        ),
-                        Spacer(),
-                        Text(
-                          '${_counters[index]}',
-                          style: TextStyle(fontSize: 15.sp),
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: () => _increment(index),
-                          child: SvgPicture.asset('assets/my_icons/plus_ic.svg'),
-                        ),
-                        SizedBox(width: 16.w)
+                child: GestureDetector(
+                  onTap: (){
+                    if(_counters[index]==0){
+                      _increment(index);
+                    }
+
+                  },
+                  child: Container(
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.all(Radius.circular(200)),
+                        border: Border.all(
+                            color: Color.fromRGBO(23, 23, 23, 0.1), width: 1)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (_counters[index] > 0) ...[
+                          SizedBox(width: 16.w),
+                          GestureDetector(
+                            onTap: () => _decrement(index),
+                            child: SvgPicture.asset(
+                                'assets/my_icons/minus_ic.svg'),
+                          ),
+                          Spacer(),
+                          Text(
+                            '${_counters[index]}',
+                            style: TextStyle(fontSize: 15.sp),
+                          ),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () => _increment(index),
+                            child:
+                                SvgPicture.asset('assets/my_icons/plus_ic.svg'),
+                          ),
+                          SizedBox(width: 16.w)
+                        ],
+                        if (_counters[index] == 0) ...[
+                          SvgPicture.asset('assets/my_icons/plus_ic.svg'),
+                        ]
                       ],
-                      if(_counters[index]==0)...[
-                        GestureDetector(
-                          onTap: () => _increment(index),
-                          child: SvgPicture.asset('assets/my_icons/plus_ic.svg'),
-                        ),
-                      ]
-
-
-                    ],
+                    ),
                   ),
                 ),
               )

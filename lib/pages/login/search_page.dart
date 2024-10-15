@@ -23,7 +23,7 @@ class SearchPage extends StatelessWidget {
           }
         }
       },
-    );;
+    );
   }
 
   Future<bool> checkFirstLaunch() async {
