@@ -7,7 +7,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.1
+  sdk: '>=3.3.0 <4.0.0'
 
 
 dependencies:
@@ -16,6 +16,7 @@ dependencies:
   flutter_screenutil:
   yandex_mapkit:
   url_launcher:
+  device_info:
   easy_localization:
   fluttertoast:
   cached_network_image: ^3.3.1
@@ -23,11 +24,11 @@ dependencies:
   sms_autofill:
   pinput:
   calendar_date_picker2:
-  device_info:
+  story_view:
   device_info_plus:
   flutter_riverpod:
-  story_view:
   auto_size_text:
+  cupertino_modal_sheet:
   modal_bottom_sheet:
   freezed_annotation:
   mask_text_input_formatter:

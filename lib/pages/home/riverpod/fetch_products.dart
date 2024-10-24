@@ -7,7 +7,7 @@ import 'package:tashkentcityresturant/models/products_model.dart';
 
 
 Future<List<ProductsModel>> fetchProducts() async {
-  final url = Uri.parse('https://api.justdev24.ru/api/product');
+  final url = Uri.parse('https://api.xn--80akjaht2adec3d.xn--p1ai/api/product');
 
   try {
     final response = await http.get(url);

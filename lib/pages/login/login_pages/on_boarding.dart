@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tashkentcityresturant/main.dart';
+import 'package:tashkentcityresturant/pages/home/home_page.dart';
 import 'package:tashkentcityresturant/pages/login/register/register_page/sign_up_page.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -20,21 +21,28 @@ class _OnBoardingState extends State<OnBoarding> {
       backgroundColor: Color.fromRGBO(247, 243, 235, 1),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                "Пропустить",
-                style: TextStyle(
-                  color: Color.fromRGBO(23, 23, 23, 0.8),
-                  fontSize: 16.sp,
+          GestureDetector(
+            onTap: (){
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (_) => HomePage()));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "Пропустить",
+                  style: TextStyle(
+                    color: Color.fromRGBO(23, 23, 23, 0.8),
+                    fontSize: 16.sp,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 16.w,
-              )
-            ],
+                SizedBox(
+                  width: 16.w,
+                )
+              ],
+            ),
           ),
           SizedBox(height: 11.h),
           Padding(

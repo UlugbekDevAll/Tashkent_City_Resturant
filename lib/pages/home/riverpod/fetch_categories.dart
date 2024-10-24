@@ -7,7 +7,7 @@ import 'dart:convert';
 
 
 Future<List<ProductsCategoryModel>> fetchCategories() async {
-  final url = Uri.parse('https://api.justdev24.ru/api/products/category');
+  final url = Uri.parse("https://api.xn--80akjaht2adec3d.xn--p1ai/api/products/category");
 
   try {
     final response = await http.get(url);
@@ -21,9 +21,10 @@ Future<List<ProductsCategoryModel>> fetchCategories() async {
 
       return categories;
     } else {
-      throw Exception('Ma\'lumotlarni olishda xatolik: ${response.statusCode}');
+      throw Exception('Ma\'lumotlarni olishda xatolik1: ${response.body}');
+
     }
   } catch (e) {
-    throw Exception('Ma\'lumotlarni olishda xatolik: $e');
+    throw Exception('Ma\'lumotlarni olishda xatolik2: $e');
   }
 }
