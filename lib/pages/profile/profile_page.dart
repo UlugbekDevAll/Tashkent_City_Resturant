@@ -8,6 +8,8 @@ import 'package:tashkentcityresturant/core/configs/theme/app_colors.dart';
 import 'package:tashkentcityresturant/main.dart';
 import 'package:tashkentcityresturant/pages/home/home_page.dart';
 import 'package:tashkentcityresturant/pages/profile/widget/address_page.dart';
+import 'package:tashkentcityresturant/pages/profile/widget/history_item.dart';
+import 'package:tashkentcityresturant/pages/profile/widget/history_page.dart';
 import 'package:tashkentcityresturant/pages/profile/widget/profile_button.dart';
 import 'package:tashkentcityresturant/pages/profile/widget/profile_edit_data_dialog.dart';
 import 'package:tashkentcityresturant/pages/profile/widget/top_bar_widget.dart';
@@ -104,7 +106,12 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             },),
             SizedBox(height: 8.h,),
-            ProfileButton(icon_title: AppIcons.historyIcon, title: "История заказ"),
+            ProfileButton(icon_title: AppIcons.historyIcon, title: "История заказ",onTap: (){
+              showCupertinoModalBottomSheet(
+                context: context,
+                builder: (context) => HistoryPage(),
+              );
+            },),
             SizedBox(height: 8.h,),
             ProfileButton(icon_title: AppIcons.discountIcon, title: "Пригласить друга"),
             SizedBox(height: 8.h,),

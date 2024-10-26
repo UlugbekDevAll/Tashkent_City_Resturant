@@ -12,9 +12,11 @@ import 'package:tashkentcityresturant/pages/home/widgets/product_list.dart';
 import 'package:tashkentcityresturant/pages/home/widgets/story_view.dart';
 import 'package:tashkentcityresturant/pages/menu/menu_page.dart';
 import 'package:tashkentcityresturant/pages/profile/profile_page.dart';
+import 'package:tashkentcityresturant/pages/profile/widget/register_dialog.dart';
 import 'package:tashkentcityresturant/pages/stories_page/storiesPage.dart';
 import 'package:tashkentcityresturant/utils/cache_values.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
+import 'package:tashkentcityresturant/utils/storage_request.dart';
 
 import '../map/map_page.dart';
 
@@ -121,10 +123,18 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        showCupertinoModalBottomSheet(
-                          context: context,
-                          builder: (context) => ProfilePage(),
-                        );
+                        if(CacheKeys.token==""){
+                          showCupertinoModalBottomSheet(
+                            context: context,
+                            builder: (context) => ProfilePage(),
+                          );
+                        }else{
+                          showCupertinoModalBottomSheet(
+                            context: context,
+                            builder: (context) => ProfilePage(),
+                          );
+                        }
+
 
                       },
                       child: Container(

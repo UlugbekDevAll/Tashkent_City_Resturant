@@ -29,7 +29,7 @@ class _TopBarWidgetState extends State<TopBarWidget> {
                 style: TextStyle(
                   fontSize: 17.sp,
                   decoration: TextDecoration.none,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: Color(0xff3F3D3C),
                 ),
               ),

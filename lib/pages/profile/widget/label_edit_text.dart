@@ -7,7 +7,8 @@ import '../../../core/configs/theme/app_colors.dart';
 
 class LabelEditText extends StatefulWidget {
   final String label;
-  const LabelEditText({super.key, required this.label});
+  final double? paddingLeft;
+  const LabelEditText({super.key, required this.label,  this.paddingLeft});
 
   @override
   State<LabelEditText> createState() => _LabelEditTextState();
@@ -18,7 +19,7 @@ class _LabelEditTextState extends State<LabelEditText> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SizedBox(width: 16.w,),
+        SizedBox(width: widget.paddingLeft ?? 16.w,),
         Text(widget.label,style: TextStyle(
             color:Color.fromRGBO(23, 23, 23, 0.4),decoration: TextDecoration.none,fontSize: 14.sp,fontWeight: FontWeight.w400
         ),textAlign: TextAlign.start,),

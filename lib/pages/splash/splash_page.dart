@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tashkentcityresturant/pages/home/home_page.dart';
+import 'package:tashkentcityresturant/pages/login/register/verification_page.dart';
 import 'package:tashkentcityresturant/pages/login/search_page.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
 
@@ -29,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
     Widget page= const SearchPage();
 
     Future.delayed(const Duration(seconds: 1), (){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> page));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> HomePage()));
     });
   }
 
