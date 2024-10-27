@@ -146,7 +146,7 @@ class _HistoryAboutPageState extends State<HistoryAboutPage> {
                 PayItem(title: "Товары с учетом скидки", description: "1 385 ₽"),
                 PayItem(title: "Бонусы", description: "50 Coins"),
                 PayItem(title: "Доставка", description: "0 ₽"),
-                SizedBox(height: 61.h)
+                SizedBox(height: 82.h)
               ],
             ),
           ),
