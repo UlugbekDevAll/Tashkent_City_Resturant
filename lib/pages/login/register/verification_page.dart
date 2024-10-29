@@ -1,25 +1,38 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tashkentcityresturant/main.dart';
+import 'package:tashkentcityresturant/pages/home/home_page.dart';
 import 'package:tashkentcityresturant/pages/login/register/register_page/sign_up_page.dart';
 import 'package:tashkentcityresturant/pages/login/register/widget/builder_header.dart';
 import 'package:tashkentcityresturant/pages/profile/widget/label_edit_text.dart';
 
 class VerificationPage extends StatefulWidget {
-  const VerificationPage({super.key});
+  final String phone;
+  final String password;
+  const VerificationPage({super.key, required this.phone, required this.password});
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
 }
 
 class _VerificationPageState extends State<VerificationPage> {
+  late SharedPreferences prefs;
   final FocusNode phoneFocusNode = FocusNode();
   final TextEditingController phoneController = TextEditingController();
   bool _isValid=false;
+
+  void initSharedPref()async{
+
+    prefs= await SharedPreferences.getInstance();
+  }
   void _checkCode(){
     setState(() {
 
@@ -29,6 +42,50 @@ class _VerificationPageState extends State<VerificationPage> {
         _isValid=false;
       }
     });
+  }
+
+  void _registerFunc()async{
+
+
+    if(_isValid){
+      var reqBody={
+        "name": "",
+        "birth_date": "",
+        "gender": "",
+        "login": widget.phone,
+        "phone": widget.phone,
+        "code": phoneController.text,
+        "password": widget.password
+      };
+      var response= await http.post(
+          Uri.parse("https://api.xn--80akjaht2adec3d.xn--p1ai/api/register"),
+          headers: {"Content-Type":"application/json"},
+          body: jsonEncode(reqBody)
+      );
+
+      var jsonResponse=jsonDecode(response.body);
+
+      if(response.statusCode==200||response.statusCode==201){
+
+        var myToken=jsonResponse['token'];
+        prefs.setString("token", myToken);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => HomePage()
+        )
+        );
+      }else{
+        Fluttertoast.showToast(
+          msg: "Xato${response.statusCode} ",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+
+    }
   }
 
   int _seconds = 59;
@@ -49,6 +106,7 @@ class _VerificationPageState extends State<VerificationPage> {
   @override
   void initState(){
     super.initState();
+    initSharedPref();
     _startTimer();
   }
   @override
@@ -194,7 +252,9 @@ class _VerificationPageState extends State<VerificationPage> {
                   child: Container(
                     height: 44.h,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _registerFunc();
+                      },
                       child: Text("Далее",style: TextStyle(color: Colors.white),),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: _isValid ? Color.fromRGBO(57, 126, 91, 1) : Color.fromRGBO(57, 126, 91, 0.5),

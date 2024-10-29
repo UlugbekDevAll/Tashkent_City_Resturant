@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                         if(CacheKeys.token==""){
                           showCupertinoModalBottomSheet(
                             context: context,
-                            builder: (context) => ProfilePage(),
+                            builder: (context) => RegisterDialog(),
                           );
                         }else{
                           showCupertinoModalBottomSheet(
