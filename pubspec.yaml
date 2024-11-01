@@ -36,6 +36,13 @@ dependencies:
   dotted_line:
   blur:
   jwt_decoder:
+  web_socket_channel:
+  hive:
+  collection:
+  path_provider:
+  qr_code_scanner:
+  permission_handler:
+  hive_flutter:
   just_the_tooltip:
 
   flutter_svg:
@@ -50,6 +57,7 @@ dev_dependencies:
   flutter_launcher_icons:
   freezed:
   build_runner:
+  hive_generator:
   auto_route_generator:
 
 
@@ -77,6 +85,8 @@ flutter:
   fonts:
       - family: Adonis
         fonts:
+          - asset: assets/fonts/Adonis_Bold.otf
+            weight: 600
           - asset: assets/fonts/Adonis_Bold.otf
             weight: 500
           - asset: assets/fonts/Adonis_Regular.otf

@@ -6,6 +6,8 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Tashkentcityresturant</string>
+	<key>NSCameraUsageDescription</key>
+    <string>Biz QR kodlarni skanerlash uchun kameradan foydalanamiz</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

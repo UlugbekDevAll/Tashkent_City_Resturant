@@ -2,17 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tashkentcityresturant/pages/splash/splash_page.dart';
+import 'package:tashkentcityresturant/services/address.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+
+Future<void> main() async {
+
+
+
+  // Initialize Hive
+  await Hive.initFlutter();  // Use this instead of Hive.init()
+
+  // Register the AddressAdapter
+  Hive.registerAdapter(AddressAdapter());
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    systemNavigationBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-    statusBarBrightness: Brightness.dark,
-    systemNavigationBarIconBrightness: Brightness.dark,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //   statusBarColor: Colors.transparent,
+  //   systemNavigationBarColor: Colors.transparent,
+  //   statusBarIconBrightness: Brightness.dark,
+  //   statusBarBrightness: Brightness.dark,
+  //   systemNavigationBarIconBrightness: Brightness.dark,
+  // ));
 
   runApp(ProviderScope(child:MyApp()) );
 }

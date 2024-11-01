@@ -8,6 +8,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tashkentcityresturant/main.dart';
 import 'package:http/http.dart' as http;
+import 'package:tashkentcityresturant/pages/home/home_page.dart';
 import 'package:tashkentcityresturant/pages/login/register/verification_page.dart';
 import 'package:tashkentcityresturant/pages/login/register/widget/builder_header.dart';
 import 'package:tashkentcityresturant/pages/profile/widget/label_edit_text.dart';
@@ -38,12 +39,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool isPasswordObscured = true;
   bool isConfirmPasswordObscured = true;
-  // late SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
-    // initSharedPref();
+    initSharedPref();
     phoneFocusNode.addListener(_onPhoneFocusChange);
     passwordFocusNode.addListener(() {
       if (!passwordFocusNode.hasFocus) {
@@ -57,10 +58,10 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     });
   }
-  // void initSharedPref()async{
-  //
-  //   prefs= await SharedPreferences.getInstance();
-  // }
+  void initSharedPref()async{
+
+    prefs= await SharedPreferences.getInstance();
+  }
 
   bool _isValid1 = false;
 
@@ -75,15 +76,22 @@ class _SignUpPageState extends State<SignUpPage> {
     if(_isValid1){
       var reqBody={
         "phone":phoneController.text,
+        "password":passwordController.text
       };
       var response= await http.post(
-          Uri.parse("https://api.xn--80akjaht2adec3d.xn--p1ai/api/register/send"),
+          Uri.parse("https://api.xn--80akjaht2adec3d.xn--p1ai/api/register"),
           headers: {"Content-Type":"application/json"},
           body: jsonEncode(reqBody)
       );
+
+      var jsonResponse=jsonDecode(response.body);
+
+      prefs.setString("tokenDb", jsonResponse['token']);
+
       if(response.statusCode==200 ||response.statusCode==201){
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => VerificationPage(phone:phoneController.text,password:passwordController.text)
+
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => HomePage()
         )
         );
       }else{

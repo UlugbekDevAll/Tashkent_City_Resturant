@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tashkentcityresturant/pages/home/home_page.dart';
 import 'package:tashkentcityresturant/pages/login/register/verification_page.dart';
 import 'package:tashkentcityresturant/pages/login/search_page.dart';
+import 'package:tashkentcityresturant/pages/order_process/order_process_page.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
 
 class SplashPage extends StatefulWidget {
