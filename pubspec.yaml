@@ -40,6 +40,7 @@ dependencies:
   hive:
   collection:
   path_provider:
+  flutter_rating_bar:
   qr_code_scanner:
   permission_handler:
   hive_flutter:
