@@ -27,7 +27,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController confirmPasswordController = TextEditingController();
   final FocusNode phoneFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
-  bool _isValid = false;
   final FocusNode confirmPasswordFocusNode = FocusNode();
 
   final maskFormatter = MaskTextInputFormatter(
@@ -46,24 +45,14 @@ class _SignUpPageState extends State<SignUpPage> {
     super.initState();
     initSharedPref();
     phoneFocusNode.addListener(_onPhoneFocusChange);
-    passwordFocusNode.addListener(() {
-      if (!passwordFocusNode.hasFocus) {
-        _checkPassword();
-      }
-    });
 
-    confirmPasswordFocusNode.addListener(() {
-      if (!confirmPasswordFocusNode.hasFocus) {
-        _checkPassword();
-      }
-    });
   }
   void initSharedPref()async{
-
     prefs= await SharedPreferences.getInstance();
   }
 
   bool _isValid1 = false;
+  bool _isPasswordCheck=false;
 
   void _checkValidity() {
     setState(() {
@@ -71,53 +60,51 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  void _registerFunc() async
-  {
-    if(_isValid1){
-      var reqBody={
-        "phone":phoneController.text,
-        "password":passwordController.text
-      };
-      var response= await http.post(
-          Uri.parse("https://api.xn--80akjaht2adec3d.xn--p1ai/api/register"),
-          headers: {"Content-Type":"application/json"},
-          body: jsonEncode(reqBody)
-      );
-
-      var jsonResponse=jsonDecode(response.body);
-
-      prefs.setString("tokenDb", jsonResponse['token']);
-
-      if(response.statusCode==200 ||response.statusCode==201){
-
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (_) => HomePage()
-        )
-        );
-      }else{
-        Fluttertoast.showToast(
-          msg: "Serverda xatolik",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
-    }
+  void _isPasswordCheckFunc(){
+    setState(() {
+      _isPasswordCheck=passwordController.text==confirmPasswordController.text;
+    });
   }
 
-  void _checkPassword() {
-    setState(() {
-      _isValid = passwordController.text == confirmPasswordController.text;
-    });
+  void _registerFunc() async
+  {
+    if(_isPasswordCheck){
+      if(_isValid1&&_isPasswordCheck){
+        var reqBody={
+          "phone":phoneController.text,
+          "password":passwordController.text
+        };
+        var response= await http.post(
+            Uri.parse("https://api.xn--80akjaht2adec3d.xn--p1ai/api/register"),
+            headers: {"Content-Type":"application/json"},
+            body: jsonEncode(reqBody)
+        );
 
-    if (_isValid) {
+        var jsonResponse=jsonDecode(response.body);
 
-    } else {
+        prefs.setString("tokenDb", jsonResponse['token']);
+
+        if(response.statusCode==200 ||response.statusCode==201){
+
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (_) => HomePage()
+          )
+          );
+        }else{
+          Fluttertoast.showToast(
+            msg: "Serverda xatolik",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      }
+    }else{
       Fluttertoast.showToast(
-        msg: "Xato",
+        msg: "Введите пароль правильно",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -126,7 +113,9 @@ class _SignUpPageState extends State<SignUpPage> {
         fontSize: 16.0,
       );
     }
+
   }
+
 
   @override
   void dispose() {
@@ -156,10 +145,6 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-      ),
       backgroundColor: Color.fromRGBO(247, 243, 235, 1),
       body: SafeArea(
         child: GestureDetector(
@@ -264,7 +249,7 @@ class _SignUpPageState extends State<SignUpPage> {
         TextField(
           obscureText: isObscured,
           controller: controller,
-            onChanged: (_) => _checkValidity(),
+            onChanged: (_) => _isPasswordCheckFunc,
           style: const TextStyle(color: Color.fromRGBO(23, 23, 23, 1), fontSize: 16),
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -278,8 +263,8 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             suffixIcon: IconButton(
               icon: Container(
-                width: 24.0, // Adjust the width as needed
-                height: 24.0, // Adjust the height as needed
+                width: 24.w,
+                height: 24.h,
                 child: isObscured
                     ? SvgPicture.asset('assets/my_icons/show_ic.svg')
                     : SvgPicture.asset('assets/my_icons/hide_ic.svg'),
@@ -287,7 +272,6 @@ class _SignUpPageState extends State<SignUpPage> {
               onPressed: toggleVisibility,
             ),
           ),
-            onSubmitted: (_) => _checkPassword()
         ),
         const SizedBox(height: 24.0),
       ],
@@ -308,7 +292,6 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         TextField(
           controller: discountController,
-          onChanged: (_) => _checkValidity(),
           style: const TextStyle(color: Color.fromRGBO(23, 23, 23, 1), fontSize: 16),
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
