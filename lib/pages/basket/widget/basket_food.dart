@@ -51,21 +51,37 @@ class _BasketFoodState extends State<BasketFood> {
               SizedBox(
                 height: 10.h,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Column(
                 children: [
-                  Container(
-                    width: 56.w,
-                    height: 36.h,
-                    decoration: BoxDecoration(
-                        color: Color.fromRGBO(255, 253, 251, 1),
-                        borderRadius: BorderRadius.circular(200)),
-                    child: Center(
-                      child: SvgPicture.asset('assets/my_icons/minus_ic.svg'),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 56.w,
+                        height: 36.h,
+                        decoration: BoxDecoration(
+                            color: Color.fromRGBO(255, 253, 251, 1),
+                            borderRadius: BorderRadius.circular(200)),
+                        child: Center(
+                          child: SvgPicture.asset('assets/my_icons/minus_ic.svg'),
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Text("1",style: TextStyle(color: Color.fromRGBO(23, 23, 23, 1),fontWeight: FontWeight.w500,fontSize: 15.sp,decoration: TextDecoration.none),),
+                      SizedBox(width: 8.w),
+                      Container(
+                        width: 56.w,
+                        height: 36.h,
+                        decoration: BoxDecoration(
+                            color: Color.fromRGBO(255, 253, 251, 1),
+                            borderRadius: BorderRadius.circular(200)),
+                        child: Center(
+                          child: SvgPicture.asset('assets/my_icons/plus_ic.svg'),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text("1",style: TextStyle(color: Color.fromRGBO(23, 23, 23, 1),fontWeight: FontWeight.w500,fontSize: 15.sp,decoration: TextDecoration.none),)
                 ],
               )
             ],
