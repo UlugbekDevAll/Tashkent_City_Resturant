@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tashkentcityresturant/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:tashkentcityresturant/pages/home/home_page.dart';
+import 'package:tashkentcityresturant/pages/login/login_pages/login_page.dart';
 import 'package:tashkentcityresturant/pages/login/register/verification_page.dart';
 import 'package:tashkentcityresturant/pages/login/register/widget/builder_header.dart';
 import 'package:tashkentcityresturant/pages/profile/widget/label_edit_text.dart';
@@ -249,7 +250,7 @@ class _SignUpPageState extends State<SignUpPage> {
         TextField(
           obscureText: isObscured,
           controller: controller,
-            onChanged: (_) => _isPasswordCheckFunc,
+            onChanged: (_){_isPasswordCheckFunc(); _checkValidity();},
           style: const TextStyle(color: Color.fromRGBO(23, 23, 23, 1), fontSize: 16),
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -352,7 +353,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: ElevatedButton(
           onPressed: () {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => SignUpPage()),
+              MaterialPageRoute(builder: (_) => LoginPage()),
             );
           },
           child: Row(

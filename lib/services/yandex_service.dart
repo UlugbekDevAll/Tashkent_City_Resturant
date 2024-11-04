@@ -1,22 +1,29 @@
-import 'dart:ui';
+import 'dart:math';
 
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class YandexService {
-  PlacemarkMapObject getMarker(Point point) {
+  // Existing method to get the default marker
+  MapObject getMarker(Point point) {
     return PlacemarkMapObject(
-      mapId: const MapObjectId('marker'),
-      point: Point(latitude: point.latitude, longitude: point.longitude),
-      opacity: 1,
-      consumeTapEvents: true,
-      onTap: (PlacemarkMapObject placeMark, Point point) {},
-      // icon: PlacemarkIcon.single(
-      //   PlacemarkIconStyle(
-      //     anchor: const Offset(0.55, 0.7),
-      //     image: BitmapDescriptor.fromAssetImage('assets/images/marker_pin.png'),
-      //     scale: 0.95,
-      //   ),
-      // ),
+      mapId: MapObjectId('default_marker'),
+      point: point,
+      icon: PlacemarkIcon.single(PlacemarkIconStyle(
+        image: BitmapDescriptor.fromAssetImage('assets/images/marker_pin.png'),
+        scale: 1.5,
+      )),
+    );
+  }
+
+  MapObject getAlternateMarker(Point point) {
+    return PlacemarkMapObject(
+      mapId: MapObjectId('alternate_marker'),
+      point: point,
+      icon: PlacemarkIcon.single(PlacemarkIconStyle(
+        image:
+            BitmapDescriptor.fromAssetImage('assets/images/restaurant_pin.png'),
+        scale: 1,
+      )),
     );
   }
 }

@@ -36,37 +36,37 @@ class _AddressDisplayWidgetState extends State<AddressDisplayWidget> {
           // No data found
           return GestureDetector(
             onTap: () {
-              // showModalBottomSheet(
-              //   context: context,
-              //   shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.vertical(top: Radius.circular(32.0)), // radius ni o'zingiz xohlagan qiymatga o'zgartiring
-              //   ),
-              //   barrierColor: Colors.black.withOpacity(0.45),
-              //   builder: (context) => SingleChildScrollView(
-              //     child: AddressPage(),
-              //   ),
-              // );
+              showModalBottomSheet(
+                context: context,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(32.0)), // radius ni o'zingiz xohlagan qiymatga o'zgartiring
+                ),
+                barrierColor: Colors.black.withOpacity(0.45),
+                builder: (context) => SingleChildScrollView(
+                  child: AddressPage(),
+                ),
+              );
 
-              showBarModalBottomSheet(
-                  context: context,
-                  backgroundColor: Color.fromRGBO(255, 253, 251, 1),
-                  topControl: Stack(
-                    children: [Container(
-                      width: 57.w,
-                      height: 4.h,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(63, 61, 60, 0.2),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),]
-                  ),
-                  barrierColor: Color.fromRGBO(0, 0, 0, 0.2),
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(
-                            32.0)),
-                  ),
-                  builder: (context) => AssessWaiterDialog());
+              // showBarModalBottomSheet(
+              //     context: context,
+              //     backgroundColor: Color.fromRGBO(255, 253, 251, 1),
+              //     topControl: Stack(
+              //       children: [Container(
+              //         width: 57.w,
+              //         height: 4.h,
+              //         decoration: BoxDecoration(
+              //           color: Color.fromRGBO(63, 61, 60, 0.2),
+              //           borderRadius: BorderRadius.circular(5.0),
+              //         ),
+              //       ),]
+              //     ),
+              //     barrierColor: Color.fromRGBO(0, 0, 0, 0.2),
+              //     shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.vertical(
+              //           top: Radius.circular(
+              //               32.0)),
+              //     ),
+              //     builder: (context) => AssessWaiterDialog());
             },
             child: Text(
               'Адреса не найдены ',

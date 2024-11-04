@@ -1,222 +1,260 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:tashkentcityresturant/pages/map/riverpod/MarkerData.dart';
+import 'package:tashkentcityresturant/pages/map/riverpod/markersProvider.dart';
 import 'package:tashkentcityresturant/pages/map/widgets/bottom_bar_sheet_map.dart';
 import 'package:tashkentcityresturant/pages/menu/widgets/switch_button.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../services/yandex_service.dart';
-import '../../utils/cache_values.dart';
 
-class MapPage extends StatefulWidget {
+
+
+
+class MapPage extends ConsumerStatefulWidget {
   final Point point;
 
   const MapPage(this.point, {super.key});
 
   @override
-  State<MapPage> createState() => _MapPageState();
+  ConsumerState<MapPage> createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapPageState extends ConsumerState<MapPage> {
   bool switchButtonMapPage = false;
-  bool loading = true;
   late YandexMapController mapController;
   List<MapObject> mapObjects = [];
-
+  late double lat;
+  late double long;
 
   @override
   void initState() {
     super.initState();
-    if (switchButtonMapPage == false) {
-      mapObjects.add(YandexService().getMarker(widget.point));
-      moveCamera();
+    _requestLocationPermission();
+  }
+
+  Future<void> _requestLocationPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      print('Location permissions are denied forever.');
+    } else {
+      await _getCurrentLocation();
     }
   }
 
-  void moveCamera() {
-    Future.delayed(const Duration(milliseconds: 250), () {
-      setState(() {});
-      Future.delayed(const Duration(milliseconds: 700), () {
-        if (!switchButtonMapPage) {
-          mapController.moveCamera(
-            CameraUpdate.newCameraPosition(
-              CameraPosition(
-                target: widget.point,
-                zoom: 16,
-              ),
-            ),
-            animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
-          );
-        }
-      });
+  Future<void> _getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      lat = position.latitude;
+      long = position.longitude; // Add current location marker
+    });
+    _updateCamera();
+  }
+
+  void updateMapObjects(List<MarkerData> markers) {
+    mapObjects.clear();
+    mapObjects.addAll(markers.map((marker) => switchButtonMapPage
+        ? YandexService().getAlternateMarker(Point(latitude: marker.latitude, longitude: marker.longitude))
+        : YandexService().getMarker(Point(latitude: marker.latitude, longitude: marker.longitude))
+    ));
+    lat=markers[0].latitude;
+    long=markers[0].longitude;
+    setState(() {});
+  }
+
+  void _updateCamera() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      final zoomLevel = switchButtonMapPage ? 15.0 : 17.0;
+      mapController.moveCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: Point(latitude: lat, longitude: long), zoom: zoomLevel),
+        ),
+        animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
+      );
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final markersAsyncValue = ref.watch(markersProvider);
 
-        @override
-        Widget build(BuildContext context)
-    {
-      return WillPopScope(
-        onWillPop: () async {
-          Navigator.pop(context);
-          return false;
-        },
-        child: Scaffold(
-          body: Stack(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            YandexMap(
+              mapType: MapType.vector,
+              rotateGesturesEnabled: false,
+              zoomGesturesEnabled: true,
+              tiltGesturesEnabled: true,
+              scrollGesturesEnabled: true,
+              nightModeEnabled: false,
+              mapObjects: mapObjects,
+              onMapCreated: (YandexMapController yandexMapController) {
+                mapController = yandexMapController;
+              },
+            ),
+            _buildMarkerIndicator(),
+            _buildControlPanel(),
+            _buildBottomControls(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMarkerIndicator() {
+    return  Visibility(
+      visible: !switchButtonMapPage,
+      child: Padding(
+          padding: EdgeInsets.only(bottom: 247.0),
+          child: Center(
+            child: Image.asset('assets/images/marker_pin.png', width: 50.0, height: 50.0),
+          ),
+
+      ),
+    );
+  }
+
+  Widget _buildControlPanel() {
+    return Column(
+      children: [
+        SizedBox(height: 70.0), // Adjust according to your UI
+        Row(
+          children: [
+            SizedBox(width: 16.0), // Adjust according to your UI
+            _buildToggleSwitch(),
+            Spacer(),
+            _buildClearMapButton(),
+            SizedBox(width: 16.0), // Adjust according to your UI
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildToggleSwitch() {
+    return AnimatedToggleSwitch<bool>.size(
+      current: switchButtonMapPage,
+      values: [false, true],
+      iconOpacity: 0.5,
+      indicatorSize: Size(145.0, 48.0),
+      customIconBuilder: (context, local, global) => Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              local.value ? 'assets/my_icons/chayxana_mini_ic.svg' : 'assets/my_icons/home_profile_ic.svg',
+              color: Color.lerp(Colors.black, Colors.white, local.animationValue),
+            ),
+            Text(
+              local.value ? 'В чайхане' : 'Доставка',
+              style: TextStyle(color: Color.lerp(Colors.black, Colors.white, local.animationValue)),
+            ),
+          ],
+        ),
+      ),
+      borderWidth: 5.0,
+      iconAnimationType: AnimationType.onHover,
+      style: ToggleStyle(
+        indicatorColor: Color.fromRGBO(216, 152, 65, 1),
+        borderColor: Colors.transparent,
+        borderRadius: BorderRadius.circular(80),
+      ),
+      selectedIconScale: 1.0,
+      onChanged: (value) async {
+        setState(() {
+          switchButtonMapPage = value;
+        });
+        final markers = await ref.read(markersProvider.future);
+        updateMapObjects(markers);
+        _updateCamera(); // Move camera to the current location after toggling
+      },
+    );
+  }
+
+  Widget _buildClearMapButton() {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        height: 48.0, // Adjust according to your UI
+        width: 48.0, // Adjust according to your UI
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(120),
+        ),
+        child: Center(
+          child: SvgPicture.asset('assets/my_icons/clear_map_ic.svg'),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomControls() {
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-
-
-              if(switchButtonMapPage == false)...[
-                YandexMap(
-                    mapType: MapType.vector,
-                    rotateGesturesEnabled: false,
-                    zoomGesturesEnabled: true,
-                    tiltGesturesEnabled: true,
-                    scrollGesturesEnabled: true,
-                    nightModeEnabled: false,
-                    mapObjects: mapObjects,
-                    onMapCreated: (
-                        YandexMapController yandexMapController) async {
-                      mapController = yandexMapController;
-                    }
-                ),
-              ],
-
-
-              Padding(
-                padding: EdgeInsets.only(top: 247.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/marker_pin.png', width: 50.0,
-                        height: 50.0),
-                  ],
-                ),
-              ),
-
-              Column(
-                children: [
-                  SizedBox(height: 70.h),
-                  Row(
-                    children: [
-                      SizedBox(width: 16.h),
-                      AnimatedToggleSwitch<bool>.size(
-                        current: switchButtonMapPage,
-                        values: [false, true],
-                        iconOpacity: 0.5,
-                        indicatorSize: Size(145.w, 48.h),
-                        customIconBuilder: (context, local, global) =>
-                            Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    local.value
-                                        ? 'assets/my_icons/chayxana_mini_ic.svg'
-                                        : 'assets/my_icons/home_profile_ic.svg',
-                                    color: Color.lerp(
-                                        Colors.black, Colors.white,
-                                        local.animationValue),
-                                  ),
-                                  Text(
-                                    local.value ? 'В чайхане' : 'Доставка',
-                                    style: TextStyle(
-                                        color: Color.lerp(
-                                            Colors.black, Colors.white,
-                                            local.animationValue)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                        borderWidth: 5.0,
-                        iconAnimationType: AnimationType.onHover,
-                        style: ToggleStyle(
-                          indicatorColor: Color.fromRGBO(216, 152, 65, 1),
-                          borderColor: Colors.transparent,
-                          borderRadius: BorderRadius.circular(80),
-                        ),
-                        selectedIconScale: 1.0,
-                        onChanged: (value) =>
-                            setState(() => switchButtonMapPage = value),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-
-                        },
-                        child: Container(
-                          height: 48.h,
-                          width: 48.w,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(120)
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset(
-                                'assets/my_icons/clear_map_ic.svg'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 16.w)
-                    ],
-                  ),
-                ],
-              ),
-
-
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Column(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        height: 48.h,
-                        width: 48.w,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(120),
-                        ),
-                        child: Center(
-                          child: SvgPicture.asset(
-                              'assets/my_icons/current_location_ic.svg'),
-                        ),
-                      ),
-                      SizedBox(width: 16.w),
-                    ],
-                  ),
-                  if(switchButtonMapPage == true)...[
-                    SizedBox(height: 43.h)
-                  ],
-
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 500),
-                    // Animatsiya davomiyligi
-                    child: switchButtonMapPage == false
-                        ? Column(
-                      key: ValueKey('mapIndicator'),
-                      // Har bir holat uchun noyob kalit
-                      children: [
-                        SizedBox(height: 4.h),
-                        SvgPicture.asset('assets/my_icons/map_indicator.svg'),
-                        SizedBox(height: 4.h),
-                        BottomBarSheetMap(),
-                      ],
-                    )
-                        : SizedBox.shrink(key: ValueKey(
-                        'emptyContainer')), // Yashirish uchun bo'sh SizedBox
-                  ),
-                ]),
-              )
-
-
+              _buildCurrentLocationButton(),
+              SizedBox(width: 16.0),
             ],
           ),
-        ),
-      );
-    }
+          if (switchButtonMapPage) ...[
+            SizedBox(height: 43.0),
+          ],
+          AnimatedSize(
+            duration: const Duration(milliseconds: 500),
+            child: switchButtonMapPage
+                ? SizedBox.shrink(key: ValueKey('emptyContainer'))
+                : Column(
+              key: ValueKey('mapIndicator'),
+              children: [
+                SizedBox(height: 4.0),
+                SvgPicture.asset('assets/my_icons/map_indicator.svg'),
+                SizedBox(height: 4.0),
+                BottomBarSheetMap(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+  Widget _buildCurrentLocationButton() {
+    return Container(
+      height: 48.0,
+      width: 48.0,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(120),
+      ),
+      child: Center(
+        child: SvgPicture.asset('assets/my_icons/current_location_ic.svg'),
+      ),
+    );
+  }
+}
+
+
+
+
+

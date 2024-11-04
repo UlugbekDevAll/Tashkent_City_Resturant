@@ -52,20 +52,17 @@ class _AddressPageState extends State<AddressPage> {
 
 
                   return ListView.builder(
-                    itemCount: addresses.length,
+                    itemCount: 10,
                     itemBuilder: (context, index) {
                       Address address = addresses[index];
-                      return ListTile(
-                        title: Text(address.address),
-                        subtitle: Text(address.isMain ? 'Main Address' : 'Secondary Address'),
-                      );
+                      return AddressItem();
                     },
                   );
                 }
               },
             ),
 
-            AddressItem(),
+
             SizedBox(height: 16.h,),
             AddAddressWidget(),
             SizedBox(height: 27.h,),

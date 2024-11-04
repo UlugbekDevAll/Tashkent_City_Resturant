@@ -176,7 +176,7 @@ class _ProductListViewState extends State<ProductListView> {
                             style: TextStyle(
                                 color: Color.fromRGBO(23, 23, 23, 1),
                                 fontSize: 28.sp,
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400,decoration: TextDecoration.none),
                           ),
                         ),
                         SizedBox(height: 6.h),
@@ -188,7 +188,7 @@ class _ProductListViewState extends State<ProductListView> {
                             style: TextStyle(
                                 color: Color.fromRGBO(23, 23, 23, 0.6),
                                 fontSize: 14.sp,
-                                fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400,decoration: TextDecoration.none),
                           ),
                         ),
                         SizedBox(height: 110.h),
@@ -228,7 +228,7 @@ class _ProductListViewState extends State<ProductListView> {
                                         TextSpan(
                                           text: '569',
                                           style: TextStyle(
-                                            decoration: TextDecoration.lineThrough, // O'rtasidan chizish
+                                            decoration: TextDecoration.lineThrough,
                                           ),
                                         ),
                                       ],

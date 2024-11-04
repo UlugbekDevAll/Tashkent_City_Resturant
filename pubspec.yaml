@@ -41,6 +41,7 @@ dependencies:
   collection:
   path_provider:
   flutter_rating_bar:
+  geolocator:
   qr_code_scanner:
   permission_handler:
   hive_flutter:
