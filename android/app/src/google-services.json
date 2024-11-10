@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "321566528196",
+    "project_id": "tashkentcitychayxana",
+    "storage_bucket": "tashkentcitychayxana.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321566528196:android:3a3bd51addf945f8406f91",
+        "android_client_info": {
+          "package_name": "com.example.tashkentcityresturant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDd7btJNQUNeA0aGHDx1QurdtRRRh4p_jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

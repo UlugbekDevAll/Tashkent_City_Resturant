@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tashkentcityresturant/firebase/firebas_api.dart';
 import 'package:tashkentcityresturant/pages/splash/splash_page.dart';
 import 'package:tashkentcityresturant/services/address.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -14,11 +16,15 @@ Future<void> main() async {
 
 
   // Initialize Hive
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseApi().initNotification();
+
   await Hive.initFlutter();  // Use this instead of Hive.init()
 
   // Register the AddressAdapter
   Hive.registerAdapter(AddressAdapter());
-  WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
   //   statusBarColor: Colors.transparent,
   //   systemNavigationBarColor: Colors.transparent,

@@ -19,6 +19,7 @@ import 'package:tashkentcityresturant/pages/profile/profile_page.dart';
 import 'package:tashkentcityresturant/pages/profile/widget/register_dialog.dart';
 import 'package:tashkentcityresturant/pages/qr_code/qr_view_example.dart';
 import 'package:tashkentcityresturant/pages/stories_page/storiesPage.dart';
+import 'package:tashkentcityresturant/pages/stories_page/stories_custom_page.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
 
 
@@ -223,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => StoriesPage()));
+                            builder: (_) => StoriesCustomPage()));
                       },
                       child: Container(
                         width: 112.w,
@@ -480,57 +481,56 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // Visibility(
-          //   visible: totalCount + totalCountPop == 0,
-          //   child: GestureDetector(
-          //     onTap: (){
-          //       // showDialog(
-          //       //   context: context,
-          //       //   barrierDismissible: true,
-          //       //   builder: (BuildContext context) {
-          //       //     return GestureDetector(
-          //       //       onTap: () {
-          //       //         Navigator.of(context).pop();
-          //       //       },
-          //       //       child:
-          //       //       AlertDialog(
-          //       //           shape: RoundedRectangleBorder(
-          //       //             borderRadius: BorderRadius.circular(28.0),
-          //       //           ),
-          //       //         content: AlertDialogHome()
-          //       //       ),
-          //       //     );
-          //       //   },
-          //       // );
-          //
-          //       Navigator.of(context).push(MaterialPageRoute(
-          //           builder: (_) => QRViewExample()
-          //       )
-          //       );
-          //     },
-          //     child: Container(
-          //       width: 1.sw,
-          //       height: 56.h,
-          //       decoration: BoxDecoration(
-          //         color: Color.fromRGBO(57, 126, 91, 1),
-          //         borderRadius: BorderRadius.all(Radius.circular(40)),
-          //       ),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         children: [
-          //           SvgPicture.asset('assets/my_icons/offisiant_ic.svg'),
-          //           SizedBox(width: 4.w,),
-          //           Text("Позвать официанта",
-          //               style: TextStyle(
-          //                   color: Colors.white,
-          //                   fontSize: 16.sp,
-          //                   fontWeight: FontWeight.w500))
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Visibility(
+            visible: totalCount + totalCountPop == 0,
+            child: GestureDetector(
+              onTap: (){
+                // showDialog(
+                //   context: context,
+                //   barrierDismissible: true,
+                //   builder: (BuildContext context) {
+                //     return GestureDetector(
+                //       onTap: () {
+                //         Navigator.of(context).pop();
+                //       },
+                //       child:
+                //       AlertDialog(
+                //           shape: RoundedRectangleBorder(
+                //             borderRadius: BorderRadius.circular(28.0),
+                //           ),
+                //         content: AlertDialogHome()
+                //       ),
+                //     );
+                //   },
+                // );
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => QRViewExample()
+                )
+                );
+              },
+              child: Container(
+                width: 1.sw,
+                height: 56.h,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(57, 126, 91, 1),
+                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset('assets/my_icons/offisiant_ic.svg'),
+                    SizedBox(width: 4.w,),
+                    Text("Позвать официанта",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500))
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
 

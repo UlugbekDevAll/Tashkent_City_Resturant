@@ -10,5 +10,6 @@ class MainActivity: FlutterActivity(){
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         MapKitFactory.setApiKey("eaa07fa0-1ad5-4eb6-9f13-1faded87b2ed")
         super.configureFlutterEngine(flutterEngine)
+
     }
 }
