@@ -10,6 +10,8 @@ import 'package:tashkentcityresturant/pages/login/search_page.dart';
 import 'package:tashkentcityresturant/pages/order_process/order_process_page.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
 
+import 'animated_icon.dart';
+
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
@@ -24,20 +26,18 @@ class _SplashPageState extends State<SplashPage> {
 
     navigate();
     super.initState();
-    _setFullScreen();
+
   }
 
   void navigate() async{
     Widget page= const SearchPage();
 
-    Future.delayed(const Duration(seconds: 1), (){
+    Future.delayed(const Duration(seconds: 2), (){
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> HomePage()));
     });
   }
 
-  void _setFullScreen(){
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +53,15 @@ class _SplashPageState extends State<SplashPage> {
             ),
           ),
 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/splash_screen.png'),
-
-            ],
+          Center(
+            child: Column(
+              children: [
+                SizedBox(height: 30.h,),
+                Center(
+                  child: AnimationDemo(),
+                )
+              ],
+            ),
           ),
         ],
       ),

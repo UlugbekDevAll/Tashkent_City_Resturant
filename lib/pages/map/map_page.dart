@@ -30,6 +30,8 @@ class _MapPageState extends ConsumerState<MapPage> {
   List<MapObject> mapObjects = [];
   late double lat;
   late double long;
+  late double currentLat;
+  late double currentLong;
 
   @override
   void initState() {
@@ -53,11 +55,13 @@ class _MapPageState extends ConsumerState<MapPage> {
   Future<void> _getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     setState(() {
-      lat = position.latitude;
-      long = position.longitude; // Add current location marker
+      currentLat=position.latitude;
+      currentLong=position.longitude;
     });
-    _updateCamera();
+    _updateCamera(Point(latitude: currentLat, longitude: currentLong));
   }
+
+
 
   void updateMapObjects(List<MarkerData> markers) {
     mapObjects.clear();
@@ -70,17 +74,39 @@ class _MapPageState extends ConsumerState<MapPage> {
     setState(() {});
   }
 
-  void _updateCamera() {
-    Future.delayed(const Duration(milliseconds: 100), () {
-      final zoomLevel = switchButtonMapPage ? 15.0 : 17.0;
+  void _updateCamera(Point point) {
+
+    if(currentLong!=null && currentLat!=null){
+
       mapController.moveCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: Point(latitude: lat, longitude: long), zoom: zoomLevel),
+          CameraPosition(target: Point(latitude: currentLat, longitude: currentLong), zoom: 17.0),
         ),
         animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
       );
-    });
-  }
+    }else{
+
+      Future.delayed(const Duration(milliseconds: 100), () {
+        // final zoomLevel = switchButtonMapPage ? 15.0 : 17.0;
+        mapController.moveCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(target: point, zoom: 17.0),
+          ),
+          animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
+        );
+      });
+    }
+    }
+
+    Future<void> _updateCameraSwitch(Point point) async{
+      mapController.moveCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: point, zoom: 17.0),
+        ),
+        animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
+      );
+    }
+
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +207,8 @@ class _MapPageState extends ConsumerState<MapPage> {
         });
         final markers = await ref.read(markersProvider.future);
         updateMapObjects(markers);
-        _updateCamera(); // Move camera to the current location after toggling
+        _updateCameraSwitch(Point(latitude: lat, longitude: long));
+
       },
     );
   }
@@ -240,15 +267,20 @@ class _MapPageState extends ConsumerState<MapPage> {
   }
 
   Widget _buildCurrentLocationButton() {
-    return Container(
-      height: 48.0,
-      width: 48.0,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(120),
-      ),
-      child: Center(
-        child: SvgPicture.asset('assets/my_icons/current_location_ic.svg'),
+    return GestureDetector(
+      onTap: (){
+        _updateCamera(Point(latitude: currentLat, longitude: currentLong));
+      },
+      child: Container(
+        height: 48.0,
+        width: 48.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(120),
+        ),
+        child: Center(
+          child: SvgPicture.asset('assets/my_icons/current_location_ic.svg'),
+        ),
       ),
     );
   }

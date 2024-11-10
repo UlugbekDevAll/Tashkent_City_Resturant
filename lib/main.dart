@@ -25,13 +25,13 @@ Future<void> main() async {
 
   // Register the AddressAdapter
   Hive.registerAdapter(AddressAdapter());
-  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-  //   statusBarColor: Colors.transparent,
-  //   systemNavigationBarColor: Colors.transparent,
-  //   statusBarIconBrightness: Brightness.dark,
-  //   statusBarBrightness: Brightness.dark,
-  //   systemNavigationBarIconBrightness: Brightness.dark,
-  // ));
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.dark,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
 
   runApp(ProviderScope(child:MyApp()) );
 }

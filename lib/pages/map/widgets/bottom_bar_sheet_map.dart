@@ -90,60 +90,61 @@ class BottomBarSheetMap extends StatelessWidget {
                   .
                   auto
                   ,
-                  )
-                  ,
+                  ),
+                      cursorColor: Color.fromRGBO(216, 152, 65, 1),
                   );
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-              child: ValueListenableBuilder<bool>(
-                valueListenable: _isFocused1,
-                builder: (context, isFocused1, child) {
-                  return TextFormField(
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Color.fromRGBO(63, 61, 60, 1)
-                    ),
-                    onTap: () {
-                      _isFocused1.value = true;
-                    },
-                    onEditingComplete: () {
-                      _isFocused1.value = false;
-                    },
-                    controller: _controller1,
-                    decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color.fromRGBO(23, 23, 23, 0.3),
-                          width: 0.5,
-                        ),
-                      ),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color.fromRGBO(23, 23, 23, 0.3),
-                          width: 0.5,
-                        ),
-                      ),
-
-                      labelText: 'Город, улица и дом',
-                      labelStyle: TextStyle(
-                        color: isFocused1 || _controller1.text.isNotEmpty
-                            ? Color.fromRGBO(63, 61, 60, 0.5)
-                            : Color.fromRGBO(63, 61, 60, 1),
-                        fontSize: 12.sp,
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior
-                          .
-                      auto
-                      ,
-                    )
-                    ,
-                  );
-                },
-              ),
-            ),
+            // Padding(padding: padding)
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+            //   child: ValueListenableBuilder<bool>(
+            //     valueListenable: _isFocused1,
+            //     builder: (context, isFocused1, child) {
+            //       return TextFormField(
+            //         style: TextStyle(
+            //             fontSize: 16.sp,
+            //             color: Color.fromRGBO(63, 61, 60, 1)
+            //         ),
+            //         onTap: () {
+            //           _isFocused1.value = true;
+            //         },
+            //         onEditingComplete: () {
+            //           _isFocused1.value = false;
+            //         },
+            //         controller: _controller1,
+            //         decoration: InputDecoration(
+            //           focusedBorder: UnderlineInputBorder(
+            //             borderSide: BorderSide(
+            //               color: Color.fromRGBO(23, 23, 23, 0.3),
+            //               width: 0.5,
+            //             ),
+            //           ),
+            //           border: UnderlineInputBorder(
+            //             borderSide: BorderSide(
+            //               color: Color.fromRGBO(23, 23, 23, 0.3),
+            //               width: 0.5,
+            //             ),
+            //           ),
+            //
+            //           labelText: 'Город, улица и дом',
+            //           labelStyle: TextStyle(
+            //             color: isFocused1 || _controller1.text.isNotEmpty
+            //                 ? Color.fromRGBO(63, 61, 60, 0.5)
+            //                 : Color.fromRGBO(63, 61, 60, 1),
+            //             fontSize: 12.sp,
+            //           ),
+            //           floatingLabelBehavior: FloatingLabelBehavior
+            //               .
+            //           auto
+            //           ,
+            //         )
+            //         ,
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

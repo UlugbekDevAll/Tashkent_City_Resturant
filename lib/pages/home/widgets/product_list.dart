@@ -304,27 +304,30 @@ class _ProductListViewState extends State<ProductListView> {
                     decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
                         color: Color.fromRGBO(243, 239, 233, 1)),
-                    child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
                       child: Image.network(
-                        'https://api.xn--80akjaht2adec3d.xn--p1ai/file//${product.photo}',
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      (loadingProgress.expectedTotalBytes ?? 1)
-                                  : null,
-                            ),
-                          );
-                        },
-                        errorBuilder: (BuildContext context, Object error,
-                            StackTrace? stackTrace) {
-                          return Text('Rasm yuklanishda xato:');
-                        },
-                      ),
+                          fit: BoxFit.cover,
+                          'https://api.xn--80akjaht2adec3d.xn--p1ai/file//${product.photo}',
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        (loadingProgress.expectedTotalBytes ?? 1)
+                                    : null,
+                              ),
+                            );
+                          },
+                          errorBuilder: (BuildContext context, Object error,
+                              StackTrace? stackTrace) {
+                            return Text('Rasm yuklanishda xato:');
+                          },
+                        ),
                     ),
+
                   ),
                 ),
                 SizedBox(height: 12.h),
