@@ -22,6 +22,8 @@ import 'package:tashkentcityresturant/pages/stories_page/storiesPage.dart';
 import 'package:tashkentcityresturant/pages/stories_page/stories_custom_page.dart';
 import 'package:tashkentcityresturant/utils/my_colors.dart';
 
+import '../profile/widget/address_page.dart';
+
 
 class HomePage extends StatefulWidget {
   final bool? checkRestaurant;
@@ -125,22 +127,36 @@ class _HomePageState extends State<HomePage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                      width: 40.w,
-                      height: 40.h,
-                      margin: const EdgeInsets.only(
-                          left: 8.0, top: 0.0, right: 8.0, bottom: 0.0),
-                      decoration: const BoxDecoration(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/my_icons/home_profile_ic.svg',
-                          height: 20.h,
-                          width: 20.w,
+                  GestureDetector(
+                    onTap: (){
+                      showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(32.0)), // radius ni o'zingiz xohlagan qiymatga o'zgartiring
                         ),
-                      )),
+                        barrierColor: Colors.black.withOpacity(0.45),
+                        builder: (context) => SingleChildScrollView(
+                          child: AddressPage(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                        width: 40.w,
+                        height: 40.h,
+                        margin: const EdgeInsets.only(
+                            left: 8.0, top: 0.0, right: 8.0, bottom: 0.0),
+                        decoration: const BoxDecoration(
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/my_icons/home_profile_ic.svg',
+                            height: 20.h,
+                            width: 20.w,
+                          ),
+                        )),
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -16,6 +16,7 @@ dependencies:
   flutter_screenutil:
   yandex_mapkit:
   url_launcher:
+  geocoding:
   device_info:
   easy_localization:
   fluttertoast:

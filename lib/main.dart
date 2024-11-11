@@ -21,10 +21,11 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await FirebaseApi().initNotification();
 
-  await Hive.initFlutter();  // Use this instead of Hive.init()
+  Hive.registerAdapter(AddressAdapter());
+  await Hive.initFlutter();
 
   // Register the AddressAdapter
-  Hive.registerAdapter(AddressAdapter());
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     systemNavigationBarColor: Colors.transparent,

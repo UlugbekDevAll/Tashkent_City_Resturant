@@ -87,7 +87,7 @@ class _AddressDisplayWidgetState extends State<AddressDisplayWidget> {
           if (mainAddress != null) {
             // Display the main address
             return Text(
-              mainAddress.address,
+              mainAddress.city,
               style: TextStyle(
                 color: Color.fromRGBO(23, 23, 23, 1),
                 fontSize: 16.sp,

@@ -18,17 +18,32 @@ class AddressAdapter extends TypeAdapter<Address> {
     };
     return Address(
       fields[0] as String,
-      fields[1] as bool,
+      fields[1] as String,
+      fields[2] as String,
+      fields[3] as String,
+      fields[4] as String,
+      fields[5] as String,
+      fields[6] as bool
     );
   }
 
   @override
   void write(BinaryWriter writer, Address obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.address)
+      ..write(obj.city)
       ..writeByte(1)
+      ..write(obj.door)
+      ..writeByte(2)
+      ..write(obj.codeDoor)
+      ..writeByte(3)
+      ..write(obj.floor)
+      ..writeByte(4)
+      ..write(obj.doorNumber)
+      ..writeByte(5)
+      ..write(obj.comment)
+      ..writeByte(6)
       ..write(obj.isMain);
   }
 

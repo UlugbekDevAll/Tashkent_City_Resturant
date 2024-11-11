@@ -1,15 +1,21 @@
+import 'dart:convert';
+
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tashkentcityresturant/pages/map/riverpod/MarkerData.dart';
 import 'package:tashkentcityresturant/pages/map/riverpod/markersProvider.dart';
 import 'package:tashkentcityresturant/pages/map/widgets/bottom_bar_sheet_map.dart';
 import 'package:tashkentcityresturant/pages/menu/widgets/switch_button.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
+import 'package:http/http.dart' as http;
 
+import '../../services/address.dart';
+import '../../services/address_hive.dart';
 import '../../services/yandex_service.dart';
 
 
@@ -32,6 +38,10 @@ class _MapPageState extends ConsumerState<MapPage> {
   late double long;
   late double currentLat;
   late double currentLong;
+  late CameraPosition _cameraPosition;
+  String _address = "Manzilni topish...";
+  CameraPosition? _lastCameraPosition;
+
 
   @override
   void initState() {
@@ -58,8 +68,50 @@ class _MapPageState extends ConsumerState<MapPage> {
       currentLat=position.latitude;
       currentLong=position.longitude;
     });
+    _cameraPosition = CameraPosition(target: Point(latitude: position.latitude, longitude: position.longitude)); // Moskvada boshlang'ich koordinata
+
     _updateCamera(Point(latitude: currentLat, longitude: currentLong));
   }
+
+
+  // Future<void> getAddressFromCoordinates(double latitude, double longitude) async {
+  //   final String url =
+  //       "https://geocode-maps.yandex.ru/1.x/?geocode=$longitude,$latitude&format=json&apikey=$apiKey";
+  //
+  //   final response = await http.get(Uri.parse(url));
+  //
+  //   if (response.statusCode == 200) {
+  //     final Map<String, dynamic> data = json.decode(response.body);
+  //     if (data['response']['GeoObjectCollection']['featureMember'].isNotEmpty) {
+  //       String address = data['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['name'];
+  //       setState(() {
+  //         _address = address;
+  //       });
+  //     } else {
+  //       setState(() {
+  //         _address = "Manzil topilmadi";
+  //       });
+  //     }
+  //   } else {
+  //     setState(() {
+  //       _address = "Xato yuz berdi!";
+  //     });
+  //   }
+  // }
+
+  // Future<void> getAddress(double latitude, double longitude) async {
+  //   try {
+  //     List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+  //     if (placemarks.isNotEmpty) {
+  //       Placemark placemark = placemarks.last;
+  //       String address = '${placemark.street}, ${placemark.locality}, ${placemark.country}';
+  //       print('Address: $address');
+  //     }
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
+
 
 
 
@@ -69,33 +121,45 @@ class _MapPageState extends ConsumerState<MapPage> {
         ? YandexService().getAlternateMarker(Point(latitude: marker.latitude, longitude: marker.longitude))
         : YandexService().getMarker(Point(latitude: marker.latitude, longitude: marker.longitude))
     ));
-    lat=markers[0].latitude;
-    long=markers[0].longitude;
-    setState(() {});
+
+    setState(() {
+      lat=markers[0].latitude;
+      long=markers[0].longitude;
+    });
   }
 
   void _updateCamera(Point point) {
 
-    if(currentLong!=null && currentLat!=null){
+    if(!switchButtonMapPage){
+      if(currentLong!=null && currentLat!=null){
 
-      mapController.moveCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: Point(latitude: currentLat, longitude: currentLong), zoom: 17.0),
-        ),
-        animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
-      );
-    }else{
-
-      Future.delayed(const Duration(milliseconds: 100), () {
-        // final zoomLevel = switchButtonMapPage ? 15.0 : 17.0;
         mapController.moveCamera(
           CameraUpdate.newCameraPosition(
-            CameraPosition(target: point, zoom: 17.0),
+            CameraPosition(target: Point(latitude: currentLat, longitude: currentLong), zoom: 17.0),
           ),
           animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
         );
-      });
+      }else{
+
+        Future.delayed(const Duration(milliseconds: 100), () {
+          // final zoomLevel = switchButtonMapPage ? 15.0 : 17.0;
+          mapController.moveCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(target: point, zoom: 17.0),
+            ),
+            animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
+          );
+        });
+      }
+    }else{
+      mapController.moveCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: point, zoom: 17.0),
+        ),
+        animation: const MapAnimation(type: MapAnimationType.smooth, duration: 2),
+      );
     }
+
     }
 
     Future<void> _updateCameraSwitch(Point point) async{
@@ -128,8 +192,16 @@ class _MapPageState extends ConsumerState<MapPage> {
               scrollGesturesEnabled: true,
               nightModeEnabled: false,
               mapObjects: mapObjects,
+              onCameraPositionChanged: (CameraPosition position, CameraUpdateReason reason, bool isGesture) {
+                // double latitude = position.target.latitude;
+                // double longitude = position.target.longitude;
+                //
+                //
+                // getAddress(latitude, longitude);
+              },
               onMapCreated: (YandexMapController yandexMapController) {
                 mapController = yandexMapController;
+                yandexMapController.moveCamera(CameraUpdate.newCameraPosition(_cameraPosition));
               },
             ),
             _buildMarkerIndicator(),
@@ -207,7 +279,7 @@ class _MapPageState extends ConsumerState<MapPage> {
         });
         final markers = await ref.read(markersProvider.future);
         updateMapObjects(markers);
-        _updateCameraSwitch(Point(latitude: lat, longitude: long));
+        _updateCamera(Point(latitude: lat, longitude: long));
 
       },
     );
@@ -284,6 +356,8 @@ class _MapPageState extends ConsumerState<MapPage> {
       ),
     );
   }
+
+
 }
 
 

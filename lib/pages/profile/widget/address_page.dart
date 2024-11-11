@@ -51,12 +51,14 @@ class _AddressPageState extends State<AddressPage> {
                   }
 
 
-                  return ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      Address address = addresses[index];
-                      return AddressItem();
-                    },
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: addresses.length, // Use the actual length of addresses
+                      itemBuilder: (context, index) {
+                        Address address = addresses[index];
+                        return AddressItem(address: address); // Pass address to AddressItem
+                      },
+                    ),
                   );
                 }
               },

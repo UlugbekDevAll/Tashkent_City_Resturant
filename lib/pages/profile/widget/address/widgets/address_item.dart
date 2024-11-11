@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tashkentcityresturant/main.dart';
+import 'package:tashkentcityresturant/services/address.dart';
 
 class AddressItem extends StatefulWidget {
-  const AddressItem({super.key});
+  final Address address;
+  const AddressItem({super.key, required this.address});
 
   @override
   State<AddressItem> createState() => _AddressItemState();
