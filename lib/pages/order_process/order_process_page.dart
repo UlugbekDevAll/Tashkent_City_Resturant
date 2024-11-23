@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gif/gif.dart';
 import 'package:tashkentcityresturant/main.dart';
+import 'package:tashkentcityresturant/pages/home/home_page.dart';
 import 'package:tashkentcityresturant/pages/order_process/widgets/process_button.dart';
 import 'package:tashkentcityresturant/utils/cache_values.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -17,9 +19,13 @@ class OrderProcessPage extends StatefulWidget {
   State<OrderProcessPage> createState() => _OrderProcessPageState();
 }
 
-class _OrderProcessPageState extends State<OrderProcessPage> {
+class _OrderProcessPageState extends State<OrderProcessPage> with TickerProviderStateMixin {
   late YandexMapController _controller;
   final List<MapObject> _mapObjects = [];
+  late GifController _controller1;
+  late GifController _controller2;
+  late GifController _controller3;
+  late GifController _controller4;
 
   final WebSocketChannel channel = WebSocketChannel.connect(
     Uri.parse('api.ташкентсити.рф'),
@@ -28,6 +34,28 @@ class _OrderProcessPageState extends State<OrderProcessPage> {
   @override
   void initState() {
     super.initState();
+    _controller1 = GifController(vsync: this);
+    _controller2 = GifController(vsync: this);
+    _controller3 = GifController(vsync: this);
+    _controller4 = GifController(vsync: this);
+
+    Future.delayed(Duration(seconds: 5), () {
+      if (mounted) {
+        _controller1.repeat(min: 0, max: 29, period: Duration(seconds: 5));
+        _controller2.repeat(min: 0, max: 29, period: Duration(seconds: 5));
+        _controller3.repeat(min: 0, max: 29, period: Duration(seconds: 5));
+        _controller4.repeat(min: 0, max: 29, period: Duration(seconds: 5));
+      }
+    });
+  }
+
+
+
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void _moveCameraToFitBothMarkers() {
@@ -112,88 +140,163 @@ class _OrderProcessPageState extends State<OrderProcessPage> {
             ],
           ),
           Positioned(
-              bottom: 40,
+            bottom: 0,
               left: 0,
               right: 0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Row(
-                    children: [SvgPicture.asset('assets/my_icons/send_ic.svg')],
-                  ),
-                  Container(
-                    width: 1.sw,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(32),
-                            topRight: Radius.circular(32))),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 26.h,
-                        ),
-                        Text(
-                          "Приняли ваш заказ",
-                          style: TextStyle(
-                              color: Color.fromRGBO(23, 23, 23, 1),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 20.sp),
-                        ),
-                        Text(
-                          "Заказ будет доставлен в течение 30 минут",
-                          style: TextStyle(
-                              color: Color.fromRGBO(63, 61, 60, 0.5),
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        SizedBox(height: 40.h,),
-                        Container(
-                          width: 1.sw,
-                          height: 65.h,
-                          margin: EdgeInsets.symmetric(horizontal: 24),
-                          child: Stack(
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+              child: GestureDetector(
+                onTap: (){
+                  // AssessWaiterDialog()
+
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (_) => HomePage(checkRestaurant:true)
+                  )
+                  );
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      children: [SvgPicture.asset('assets/my_icons/map_indicator.svg')],
+                    ),
+                    Container(
+                      width: 1.sw,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(32),
+                              topRight: Radius.circular(32))),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 26.h,
+                          ),
+                          Text(
+                            "Приняли ваш заказ",
+                            style: TextStyle(
+                                color: Color.fromRGBO(23, 23, 23, 1),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 20.sp),
+                          ),
+                          Text(
+                            "Заказ будет доставлен в течение 30 минут",
+                            style: TextStyle(
+                                color: Color.fromRGBO(63, 61, 60, 0.5),
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          SizedBox(height: 40.h,),
+                          Container(
+                            width: 1.sw,
+                            height: 65.h,
+                            margin: EdgeInsets.symmetric(horizontal: 24),
+                            child: Stack(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 1.sw,
+                                      height: 1,
+                                      color: Color.fromRGBO(23, 23, 23, 0.1),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: 1.sw,
-                                    height: 1,
-                                    color: Color.fromRGBO(23, 23, 23, 0.1),
+                                  width: 64.w,
+                                  height: 64.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: Color.fromRGBO(247, 243, 235, 1)
+                                  ),
+                                  child: Center(
+                                    child: Gif(
+                                      controller: _controller1,
+                                      width: 24,
+                                      height: 24,
+                                      autostart: Autostart.loop,
+                                      image: AssetImage('assets/gif/pan.gif'),  // Replace with your GIF path
+                                    ),
+                                  ),
+                                ),
+                                  Container(
+                                    width: 64.w,
+                                    height: 64.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(100),
+                                        color: Color.fromRGBO(247, 243, 235, 1)
+                                    ),
+                                    child: Center(
+                                      child: Gif(
+                                        controller: _controller2,
+                                        width: 24,
+                                        height: 24,
+                                        autostart: Autostart.loop,
+                                        image: AssetImage('assets/gif/check.gif'),  // Replace with your GIF path
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 64.w,
+                                    height: 64.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(100),
+                                        color: Color.fromRGBO(247, 243, 235, 1)
+                                    ),
+                                    child: Center(
+                                      child: Gif(
+                                        controller: _controller3,
+                                        width: 24,
+                                        height: 24,
+                                        autostart: Autostart.loop,
+                                        image: AssetImage('assets/gif/truck.gif'),  // Replace with your GIF path
+                                      ),
+                                    ),
+                                  ),
+
+                                  Container(
+                                    width: 64.w,
+                                    height: 64.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(100),
+                                        color: Color.fromRGBO(247, 243, 235, 1)
+                                    ),
+                                    child: Center(
+                                      child: Gif(
+                                        controller: _controller4,
+                                        width: 24,
+                                        height: 24,
+                                        autostart: Autostart.loop,
+                                        image: AssetImage('assets/gif/finish.gif'),  // Replace with your GIF path
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
-                              Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                              ]
+                            ),
+                          ),
+                          SizedBox(height: 40.h,),
+                          Container(
+                            width: 1.sw,
+                            margin: EdgeInsets.symmetric(horizontal: 24),
+                            child: Row(
                               children: [
-                                ProcessButton(image: 'assets/my_icons/food_process_time_ic.svg'),
-                                ProcessButton(image: 'assets/my_icons/food_process_ic.svg'),
-                                ProcessButton(image: 'assets/my_icons/food_navigator_process.svg'),
-                                ProcessButton(image: 'assets/my_icons/food_process_finish_ic.svg'),
+                                Expanded(child: ProcessClick(title: "Отменить заказ")),
+                                SizedBox(width: 5.w,),
+                                Expanded(child: ProcessClick(title: "Связаться с нами")),
                               ],
                             ),
-
-                            ]
                           ),
-                        ),
-                        SizedBox(height: 40.h,),
-                        Container(
-                          width: 1.sw,
-                          margin: EdgeInsets.symmetric(horizontal: 24),
-                          child: Row(
-                            children: [
-                              Expanded(child: ProcessClick(title: "Отменить заказ")),
-                              SizedBox(width: 5.w,),
-                              Expanded(child: ProcessClick(title: "Связаться с нами")),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 54.h,)
-                      ],
-                    ),
-                  )
-                ],
+                          SizedBox(height: 54.h,)
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               )),
         ],
       ),

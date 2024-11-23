@@ -31,6 +31,8 @@ dependencies:
   auto_size_text:
   cupertino_modal_sheet:
   modal_bottom_sheet:
+  gif:
+
   freezed_annotation:
   mask_text_input_formatter:
   shared_preferences:
@@ -87,6 +89,7 @@ flutter:
     - assets/fonts/
     - assets/my_icons/
     - assets/images/
+    - assets/gif/
     - assets/translations/
 
 

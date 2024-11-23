@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                   )),
               SizedBox(height: 24.h),
               SizedBox(
-                height: 144.h,
+                height: 124.h,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 10,
@@ -243,33 +243,23 @@ class _HomePageState extends State<HomePage> {
                             builder: (_) => StoriesCustomPage()));
                       },
                       child: Container(
-                        width: 112.w,
+                        width: 102.w,
                         margin: EdgeInsets.only(
                             left: index == 0 ? 8.w : 0, right: 6.w),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           border: Border.all(
                               color: Color.fromRGBO(208, 129, 23, 1), width: 1),
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(80),
-                            topRight: Radius.circular(80),
-                            bottomLeft: Radius.circular(12),
-                            bottomRight: Radius.circular(12),
-                          ),
+                          borderRadius:  BorderRadius.circular(26)
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(3.0),
                           child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(80),
-                                topRight: Radius.circular(80),
-                                bottomLeft: Radius.circular(12),
-                                bottomRight: Radius.circular(12),
-                              ),
+                              borderRadius: BorderRadius.circular(26),
                               child: Stack(
                                 children: [
                                   Image.asset('assets/images/stories_img_bg.png',
-                                      fit: BoxFit.cover),
+                                      fit: BoxFit.fill,width: 1.sw,),
                                   Container(
                                       color: Colors.yellow.withOpacity(0.1)),
                                   Align(
